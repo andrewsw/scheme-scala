@@ -15,6 +15,8 @@ object SchemeParser extends Parsers {
 
   def symbol:Parser[Char] = oneOf("!#$%&|*+-/:<=>?@^_~")
 
+  def spaces = rep1(elem(' '))
+
   def parse (s:String) = {
     val input = new CharSequenceReader(s)
     symbol(input)

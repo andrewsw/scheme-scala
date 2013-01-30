@@ -10,7 +10,7 @@ object SchemeParser extends Parsers {
 
   def oneOf(a:String) = {
     val accepted = new StringOps(a)
-    acceptIf(c => (accepted.toList.exists(_ == c)))(c => c + " not oneOf " + a)
+    acceptIf(c => (accepted.toList.contains(c)))(c => c + " not oneOf " + a)
   }
 
   def symbol:Parser[Char] = oneOf("!#$%&|*+-/:<=>?@^_~")

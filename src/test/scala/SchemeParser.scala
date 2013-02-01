@@ -56,4 +56,6 @@ class ParserSpec extends FlatSpec with ParserAssertions{
     val atoms = List("atom", "a70m5", "*a/t%o!m*")
     atoms.map(a => assertSuccess(phrase(parseAtom)(new CharSequenceReader(a))))
   }
+
+  it should "return a LispVal Atom object" is (pending)
 }

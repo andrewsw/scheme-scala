@@ -50,5 +50,10 @@ class ParserSpec extends FlatSpec with ParserAssertions{
     assertNoSuccess(spaces(no_space))
   }
 
-}
+  behavior of "The SchemeParser atom parser"
 
+  it should "accept Lisp Atoms" in {
+    val atoms = List("atom", "a70m5", "*a/t%o!m*")
+    atoms.map(a => assertSuccess(phrase(parseAtom)(new CharSequenceReader(a))))
+  }
+}

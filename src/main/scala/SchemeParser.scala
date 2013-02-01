@@ -10,12 +10,17 @@ object SchemeParser extends Parsers {
 
   def oneOf(a:String) = {
     val accepted = new StringOps(a)
-    acceptIf(c => (accepted.toList.contains(c)))(c => c + " not oneOf " + a)
+    acceptIf(accepted.toList.contains(_))(_ + " not oneOf " + a)
   }
 
   def symbol:Parser[Char] = oneOf("!#$%&|*+-/:<=>?@^_~")
 
   def spaces = rep1(elem(' '))
+
+  def letter = acceptIf(_.isLetter)(_ + " not a letter")
+  def digit = acceptIf(_.isDigit)(_ + " not a digit")
+
+  def parseAtom = (letter | symbol) ~ rep(letter | digit | symbol)
 
   def parse (s:String) = {
     val input = new CharSequenceReader(s)

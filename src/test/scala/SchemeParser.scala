@@ -39,15 +39,15 @@ class ParserSpec extends FlatSpec with ParserAssertions{
   behavior of "The SchemeParser spaces parser"
 
   it should "accept any number of leading spaces" in {
-    val one_space = new CharSequenceReader(" abc")
-    val many_spaces = new CharSequenceReader("      123")
-    assertSuccess(spaces(one_space))
-    assertSuccess(spaces(many_spaces))
+    val oneSpace = new CharSequenceReader(" abc")
+    val manySpaces = new CharSequenceReader("      123")
+    assertSuccess(spaces(oneSpace))
+    assertSuccess(spaces(manySpaces))
   }
 
   it should "reject strings that don't start with a space" in {
-    val no_space = new CharSequenceReader("hello")
-    assertNoSuccess(spaces(no_space))
+    val noSpace = new CharSequenceReader("hello")
+    assertNoSuccess(spaces(noSpace))
   }
 
   behavior of "The SchemeParser atom parser"

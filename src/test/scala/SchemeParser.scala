@@ -7,14 +7,14 @@ import parser.SchemeParser._
 
 trait ParserAssertions extends Assertions {
 
-  def assertSuccess(result:ParseResult[_]) = {
+  val assertSuccess = (result:ParseResult[_]) => {
     result match {
       case Success(_,_)     => assert(true)
       case NoSuccess(msg,_) => fail(msg)
     }
   }
 
-  def assertNoSuccess(result:ParseResult[_]) = {
+  val assertNoSuccess = (result:ParseResult[_]) => {
     result match {
       case Success(a,_)   => fail("parser accepted: " + a)
       case NoSuccess(_,_) => assert(true)

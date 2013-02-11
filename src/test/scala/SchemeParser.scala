@@ -58,12 +58,23 @@ class ParserSpec extends FlatSpec with ParserAssertions{
     atoms.map(a => assertSuccess(phrase(atom)(new CharSequenceReader(a))))
   }
 
-  it should "return a LispVal Atom object" in {
+  it should "accept an atom and return a LispVal Atom object" in {
     val result = phrase(atom)(new CharSequenceReader("a7om5"))
 
     result match {
       case Success(Atom(a),_) => assert(a == "a7om5")
       case e                  => fail(e + ", did not parse an Atom")
+    }
+  }
+
+  behavior of "The SchemeParser string parser"
+
+  it should "accept a quoted string and return a LispVal String object" in {
+    val result = phrase(string)(new CharSequenceReader("\"test string\""))
+
+    result match {
+      case Success(LispString(s), _) => assert(s == "test string")
+      case e                         => fail (e + ", did not parse a String")
     }
   }
 }

@@ -14,6 +14,11 @@ object SchemeParser extends Parsers {
     acceptIf(accepted.toList.contains(_))(_ + " not oneOf " + a)
   }
 
+  val noneOf = (a:String) => {
+    val accepted = new StringOps(a)
+    acceptIf(!accepted.toList.contains(_))(_ + " is one of " + a)
+  }
+
   val symbol:Parser[Char] = oneOf("!#$%&|*+-/:<=>?@^_~")
 
   val spaces = rep1(elem(' '))
@@ -25,6 +30,8 @@ object SchemeParser extends Parsers {
     first <- (letter | symbol)
     rest <- rep(letter | digit | symbol)
   } yield { Atom(first + rest.mkString("")) }
+
+  val string = '"' ~> rep(noneOf("\"")) <~ '"' ^^ { xs => LispString(xs.mkString("")) }
 
   val parse = (s:String) => {
     val input = new CharSequenceReader(s)

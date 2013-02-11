@@ -3,6 +3,7 @@ package parser
 import scala.util.parsing.combinator.Parsers
 import scala.util.parsing.input.CharSequenceReader
 import scala.collection.immutable.StringOps
+import scala.Nothing
 
 object SchemeParser extends Parsers {
 
@@ -20,7 +21,10 @@ object SchemeParser extends Parsers {
   val letter = acceptIf(_.isLetter)(_ + " not a letter")
   val digit = acceptIf(_.isDigit)(_ + " not a digit")
 
-  val parseAtom = (letter | symbol) ~ rep(letter | digit | symbol)
+  val atom = for {
+    first <- (letter | symbol)
+    rest <- rep(letter | digit | symbol)
+  } yield { Atom(first + rest.mkString("")) }
 
   val parse = (s:String) => {
     val input = new CharSequenceReader(s)

@@ -4,6 +4,7 @@ import org.scalatest.Assertions
 import scala.util.parsing.input.CharSequenceReader
 
 import parser.SchemeParser._
+import parser._
 
 trait ParserAssertions extends Assertions {
 
@@ -54,8 +55,15 @@ class ParserSpec extends FlatSpec with ParserAssertions{
 
   it should "accept Lisp Atoms" in {
     val atoms = List("atom", "a70m5", "*a/t%o!m*")
-    atoms.map(a => assertSuccess(phrase(parseAtom)(new CharSequenceReader(a))))
+    atoms.map(a => assertSuccess(phrase(atom)(new CharSequenceReader(a))))
   }
 
-  it should "return a LispVal Atom object" is (pending)
+  it should "return a LispVal Atom object" in {
+    val result = phrase(atom)(new CharSequenceReader("a7om5"))
+
+    result match {
+      case Success(Atom(a),_) => assert(a == "a7om5")
+      case e                  => fail(e + ", did not parse an Atom")
+    }
+  }
 }

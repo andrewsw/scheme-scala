@@ -4,7 +4,7 @@ import org.scalatest.Assertions
 import scala.util.parsing.input.CharSequenceReader
 
 import parser.SchemeParser._
-import parser._
+import syntax._
 
 trait ParserAssertions extends Assertions {
 

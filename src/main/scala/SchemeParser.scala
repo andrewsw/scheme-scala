@@ -3,7 +3,7 @@ package parser
 import scala.util.parsing.combinator.Parsers
 import scala.util.parsing.input.CharSequenceReader
 import scala.collection.immutable.StringOps
-import scala.Nothing
+import syntax._
 
 object SchemeParser extends Parsers {
 

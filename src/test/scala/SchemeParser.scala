@@ -21,6 +21,10 @@ trait ParserAssertions extends Assertions {
       case NoSuccess(_,_) => assert(true)
     }
   }
+
+  val runParser = (p:Parser[_], s:String) => {
+    phrase(p)(new CharSequenceReader(s))
+  }
 }
 
 class ParserSpec extends FlatSpec with ParserAssertions{
@@ -55,11 +59,11 @@ class ParserSpec extends FlatSpec with ParserAssertions{
 
   it should "accept Lisp Atoms" in {
     val atoms = List("atom", "a70m5", "*a/t%o!m*")
-    atoms.map(a => assertSuccess(phrase(atom)(new CharSequenceReader(a))))
+    atoms.map(a => assertSuccess(runParser(atom, a)))
   }
 
   it should "accept an atom and return a LispVal Atom object" in {
-    val result = phrase(atom)(new CharSequenceReader("a7om5"))
+    val result = runParser(atom, "a7om5")
 
     result match {
       case Success(Atom(a),_) => assert(a == "a7om5")
@@ -68,8 +72,8 @@ class ParserSpec extends FlatSpec with ParserAssertions{
   }
 
   it should "accept #t and #t but return LispBools instead of Atoms" in {
-    val trueResult = phrase(atom)(new CharSequenceReader("#t"))
-    val falseResult = phrase(atom)(new CharSequenceReader("#f"))
+    val trueResult = runParser(atom, "#t")
+    val falseResult = runParser(atom, "#f")
 
     trueResult match {
       case Success(LispBool(r), _) => assert(r)
@@ -85,7 +89,7 @@ class ParserSpec extends FlatSpec with ParserAssertions{
   behavior of "The SchemeParser string parser"
 
   it should "accept a quoted string and return a LispVal String object" in {
-    val result = phrase(string)(new CharSequenceReader("\"test string\""))
+    val result = runParser(string, "\"test string\"")
 
     result match {
       case Success(LispString(s), _) => assert(s == "test string")

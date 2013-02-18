@@ -2,7 +2,6 @@ package parser
 
 import scala.util.parsing.combinator.Parsers
 import scala.util.parsing.input.CharSequenceReader
-import scala.collection.immutable.StringOps
 import syntax._
 
 object SchemeParser extends Parsers {
@@ -10,13 +9,11 @@ object SchemeParser extends Parsers {
   type Elem = Char
 
   val oneOf = (a:String) => {
-    val accepted = new StringOps(a)
-    acceptIf(accepted.toList.contains(_))(_ + " not oneOf " + a)
+    acceptIf(a.toList.contains(_))(_ + " not oneOf " + a)
   }
 
   val noneOf = (a:String) => {
-    val accepted = new StringOps(a)
-    acceptIf(!accepted.toList.contains(_))(_ + " is one of " + a)
+    acceptIf(!a.toList.contains(_))(_ + " is one of " + a)
   }
 
   val symbol:Parser[Char] = oneOf("!#$%&|*+-/:<=>?@^_~")

@@ -6,7 +6,7 @@ Working through [Write Yourself a Scheme in 48 Hours](https://en.wikibooks.org/w
 The Plan
 ========
 
-The plan is simple, follow the text of [Write Yourself a Scheme in 48 Hours](https://en.wikibooks.org/wiki/Write_Yourself_a_Scheme_in_48_Hours), but write it in [Scala](http://www.scala-lang.org/). This was conceived by rmogstad and I as a means to learn some Scala.
+The plan is simple, follow the text of [Write Yourself a Scheme in 48 Hours](https://en.wikibooks.org/wiki/Write_Yourself_a_Scheme_in_48_Hours), but write it in [Scala](http://www.scala-lang.org/). This was conceived by @rmogstad and I as a means to learn some Scala.
 
 Testing
 =======

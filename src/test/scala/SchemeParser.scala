@@ -67,6 +67,21 @@ class ParserSpec extends FlatSpec with ParserAssertions{
     }
   }
 
+  it should "accept #t and #t but return LispBools instead of Atoms" in {
+    val trueResult = phrase(atom)(new CharSequenceReader("#t"))
+    val falseResult = phrase(atom)(new CharSequenceReader("#f"))
+
+    trueResult match {
+      case Success(LispBool(r), _) => assert(r)
+      case e                       => fail(e + ", did not parse #t as true")
+    }
+
+    falseResult match {
+      case Success(LispBool(r), _) => assert(!r)
+      case e                       => fail(e + ", did not parse #f as false")
+    }
+  }
+
   behavior of "The SchemeParser string parser"
 
   it should "accept a quoted string and return a LispVal String object" in {

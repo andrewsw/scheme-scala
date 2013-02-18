@@ -23,10 +23,15 @@ object SchemeParser extends Parsers {
   val letter = acceptIf(_.isLetter)(_ + " not a letter")
   val digit = acceptIf(_.isDigit)(_ + " not a digit")
 
-  val atom = for {
+  val atom:Parser[LispVal] = for {
     first <- (letter | symbol)
     rest <- rep(letter | digit | symbol)
-  } yield { Atom(first + rest.mkString("")) }
+  } yield { (first + rest.mkString("")) match {
+              case "#t" => LispBool(true)
+              case "#f" => LispBool(false)
+              case a    => Atom(a)
+            }
+  }
 
   val string = '"' ~> rep(noneOf("\"")) <~ '"' ^^ { xs => LispString(xs.mkString("")) }
 

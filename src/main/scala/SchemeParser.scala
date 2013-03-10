@@ -35,6 +35,8 @@ object SchemeParser extends Parsers {
 
   val string = '"' ~> rep(noneOf("\"")) <~ '"' ^^ { xs => LispString(xs.mkString("")) }
 
+  val number = rep1(digit) ^^ { n => Number(Integer.parseInt(n.mkString(""))) }
+
   val parse = (s:String) => {
     val input = new CharSequenceReader(s)
     symbol(input)

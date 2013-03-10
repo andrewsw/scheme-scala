@@ -71,7 +71,7 @@ class ParserSpec extends FlatSpec with ParserAssertions{
     }
   }
 
-  it should "accept #t and #t but return LispBools instead of Atoms" in {
+  it should "accept #t and #f but return LispBools instead of Atoms" in {
     val trueResult = runParser(atom, "#t")
     val falseResult = runParser(atom, "#f")
 
@@ -84,6 +84,8 @@ class ParserSpec extends FlatSpec with ParserAssertions{
       case Success(LispBool(r), _) => assert(!r)
       case e                       => fail(e + ", did not parse #f as false")
     }
+
+
   }
 
   behavior of "The SchemeParser string parser"
@@ -96,4 +98,28 @@ class ParserSpec extends FlatSpec with ParserAssertions{
       case e                         => fail (e + ", did not parse a String")
     }
   }
+
+  behavior of "The SchemeParser number parser"
+
+  it should "accept integers and return a matching LispVal Number object" in {
+    runParser(number, "123") match {
+      case Success(Number(n), _) => assert(n == 123)
+      case e                     => fail (e + ", did not parse a Number")
+    }
+  }
+
+  it should "reject integers followed by non-integers" in {
+    runParser(number, "12a") match {
+      case Success(Number(n), _) => fail ("accepted 12a but should have rejected")
+      case e                     => assert(true)
+    }
+  }
+
+  it should "reject integers preceded by non-integers" in {
+    runParser(number, "a12") match {
+      case Success(Number(n), _) => fail ("accepted a12 but should have rejected")
+      case e                     => assert(true)
+    }
+  }
+
 }

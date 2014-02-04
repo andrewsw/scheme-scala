@@ -99,6 +99,52 @@ class ParserSpec extends FlatSpec with ParserAssertions{
     }
   }
 
+  it should "accept a string that contains an escaped quote" in {
+    val result = runParser(string, "\"test \\\"string\\\"\"")
+
+    result match {
+      case Success(LispString(s), _) => assert(s == "test \"string\"")
+      case e                         => fail (e + ", did not accept quotes in a String")
+    }
+  }
+
+  it should "accept a string that contains an escaped newline" in {
+    val result = runParser(string, "\"test\nstring\"")
+
+    result match {
+      case Success(LispString(s), _) => assert(s == "test\nstring")
+      case e                         => fail(e +  ", did not accept newline in a String")
+    }
+  }
+
+
+  it should "accept a string that contains an escaped tab" in {
+    val result = runParser(string, "\"test\tstring\"")
+
+    result match {
+      case Success(LispString(s), _) => assert(s == "test\tstring")
+      case e                         => fail(e +  ", did not accept tab in a String")
+    }
+  }
+
+  it should "accept a string that contains an escaped carriage return" in {
+    val result = runParser(string, "\"test\rstring\"")
+
+    result match {
+      case Success(LispString(s), _) => assert(s == "test\rstring")
+      case e                         => fail(e +  ", did not accept carriage return in a String")
+    }
+  }
+
+  it should "accept a string that contains an escaped backslash" in {
+    val result = runParser(string, "\"test\\\\string\"")
+
+    result match {
+      case Success(LispString(s), _) => assert(s == "test\\string")
+      case e                         => fail(e +  ", did not accept backslash in a String")
+    }
+  }
+
   behavior of "The SchemeParser number parser"
 
   it should "accept integers and return a matching LispVal Number object" in {

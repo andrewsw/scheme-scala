@@ -33,7 +33,15 @@ object SchemeParser extends Parsers {
             }
   }
 
-  val string = '"' ~> rep(noneOf("\"")) <~ '"' ^^ { xs => LispString(xs.mkString("")) }
+  val escapedChars = '\\' ~> oneOf("\\\"nrt") ^^ { x => println("here I am " + x); x match {
+    case '\\' => x
+    case '"'  => x
+    case 'n'  => '\n'
+    case 'r'  => '\r'
+    case 't'  => '\t'}
+  }
+
+  val string = '"' ~> rep(escapedChars | noneOf ("\\\"")) <~ '"' ^^ { xs => LispString(xs.mkString("")) }
 
   val number = rep1(digit) ^^ { n => Number(Integer.parseInt(n.mkString(""))) }
 
